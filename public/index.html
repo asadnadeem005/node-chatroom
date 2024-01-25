@@ -3,32 +3,55 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./index.css" />
     <title>Chat</title>
   </head>
   <body>
-    <h1>Chat App</h1>
+    <h1 class="heading">Chat App</h1>
 
-    <input type="text" name="messge" id="message" />
-    <button type="button" id="sendBtn">Send</button>
+    <div id="main-div">
+      <div id="first-user">
+        <input type="text" name="messge" id="message1" />
+        <button type="button" id="firstsendBtn">Send</button>
 
-    <div id="chat"></div>
+        <div id="chat1"></div>
+      </div>
+
+      <div id="second-user">
+        <input type="text" name="messge" id="message2" />
+        <button type="button" id="secondsendBtn">Send</button>
+
+        <div id="chat2"></div>
+      </div>
+    </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
       const socket = io();
-      const sendBtn = document.getElementById("sendBtn");
-      const msgInput = document.getElementById("message");
-      const chatBox = document.getElementById("chat");
+      const firstsendBtn = document.getElementById("firstsendBtn");
+      const secondsendBtn = document.getElementById("secondsendBtn");
+      const msgInput1 = document.getElementById("message1");
+      const msgInput2 = document.getElementById("message2");
+      const chatBox1 = document.getElementById("chat1");
+      const chatBox2 = document.getElementById("chat2");
 
-      sendBtn.addEventListener("click", (e) => {
-        const message = msgInput.value;
+      firstsendBtn.addEventListener("click", (e) => {
+        const message = msgInput1.value;
+        socket.emit("chat", message);
+      });
+
+      secondsendBtn.addEventListener("click", (e) => {
+        const message = msgInput2.value;
         socket.emit("chat", message);
       });
 
       socket.on("message", (msg) => {
         const p = document.createElement("p");
         p.innerText = msg;
-        chatBox.appendChild(p);
+        const l = document.createElement("p");
+        l.innerText = msg;
+        chatBox1.appendChild(l);
+        chatBox2.appendChild(p);
       });
     </script>
   </body>
